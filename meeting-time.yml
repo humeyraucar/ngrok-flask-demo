@@ -1,0 +1,66 @@
+---
+
+- hosts: localhost
+  tasks:
+
+  - name: message
+    set_fact:
+      slack_message: >-
+       {
+          "channel":"C02CF7R2KPV",
+          "text":"meeting time",
+          "blocks": [
+           {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "Toplantı için uygun saati seçiniz:"
+                      }
+           },
+           {
+              "type": "actions",
+              "elements": [
+               {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "09.00",
+                    "emoji": true
+                          },
+                  "value": "09.00",
+                  "action_id": "actionId-0"
+               },
+               {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "14.00",
+                    "emoji": true
+                          },
+                  "value": "14.00",
+                  "action_id": "actionId-1"
+               }
+             ]
+           }
+         ]
+       }
+       
+  - name: send message
+    uri:
+      url: "https://slack.com/api/chat.postMessage"
+      headers:
+        Content-Type: "application/json; charset=utf-8"
+        Authorization: "Bearer xoxb-2401101278246-2423055508898-2x2X4G8adPwA573qVKvflRwk"
+      body: "{{ slack_message }}"
+      method: POST
+      body_format: json
+      return_content: yes
+    register: slack_response
+    delegate_to: localhost
+    
+  - name: write slack response
+    debug:
+      msg: "{{slack_response}}"
+      
+  
+
