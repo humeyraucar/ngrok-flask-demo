@@ -4,6 +4,7 @@
   vars:
     name: username
     time: 00.00
+    threadts: 0
     
   tasks:
   
@@ -12,6 +13,7 @@
       slack_message: >-
        {
           "channel":"C02CF7R2KPV",
+          "thread_ts": "{{threadts}}",
           "text":"<@{{ name }}> toplantı için saat {{ time }}'i seçti."
        }
        
@@ -20,7 +22,7 @@
       url: "https://slack.com/api/chat.postMessage"
       headers:
         Content-Type: "application/json; charset=utf-8"
-        Authorization: "Bearer xoxb-2401101278246-2423055508898-2x2X4G8adPwA573qVKvflRwk"
+        Authorization: "Bearer xoxb-2401101278246-2423055508898-o0AYLSyzHNs0jjrHsAPEMUpe"
       body: "{{ slack_message }}"
       method: POST
       body_format: json
