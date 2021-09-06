@@ -17,9 +17,13 @@ def respond():
     """    
     response_msg = json.loads(request.form["payload"])
 
-    parameters = {"name": response_msg['user']['id'], "time": response_msg['actions'][0]['value']}    
+    parameters = {"name": response_msg['user']['id'], "time": response_msg['actions'][0]['value'], "threadts": response_msg['container']['message_ts']}
+    
+    user_file = open("user-data.txt", "a")
+    user_file.writelines(str(parameters) + "\n")
+    user_file.close()
+        
     command = "ansible-playbook send-message.yml --connection=local --extra-vars \"" + str(parameters) + "\""
-   
     os.system(command)
     return make_response("OK",200)
     
